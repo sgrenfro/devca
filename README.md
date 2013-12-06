@@ -27,6 +27,7 @@ A simple wrapper around OpenSSL for issuing SSL certs in a dev environment.
   
 5. Configure apache to use SSL.
 
+        $ sudo cp /private/etc/apache2/httpd.conf /private/etc/apache2/httpd.conf.orig
         $ sudo vi /private/etc/apache2/httpd.conf # uncomment the httpd-ssl.conf line
         $ diff -U0 /private/etc/apache2/httpd.conf.orig /private/etc/apache2/httpd.conf
         --- /private/etc/apache2/httpd.conf.orig	2013-12-06 09:19:58.000000000 -0800
