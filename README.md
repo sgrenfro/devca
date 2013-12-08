@@ -8,7 +8,6 @@ A simple wrapper around OpenSSL for issuing SSL certs in a dev environment.
 1. Download devca.sh
 2. Create the CA
 
-
         $ ./devca.sh init
         Done. Install /Users/sgrenfro/.devca/devca.crt in your browser as a trusted root CA.
 
@@ -17,15 +16,7 @@ A simple wrapper around OpenSSL for issuing SSL certs in a dev environment.
         $ ./devca.sh cert '*.example.com'
         Done. Install /Users/sgrenfro/.devca/star.example.com.key and /Users/sgrenfro/.devca/star.example.com.crt in your webserver.
 
-4. Install the CA cert in your browser. For Chrome and Safari, just open the cert, click Always Trust, and enter your password. You should then see the certificate marked trusted in your account. If you use Firefox, you'll have to install it in Firefox separately.
-
-        $ open ~/.devca/devca.txt
-        
-  ![Always Trust CA Cert Dialog Screenshot](/images/devca-install-ca-cert.png "Click Always Trust")
-  
-  ![Certificate Marked Trusted in Keychain Acceess Screenshot](/images/devca-install-ca-cert-success.png "This certificate is marked trusted for this account")
-  
-5. Configure apache to use SSL.
+4. Configure apache to use SSL.
 
         $ sudo cp /private/etc/apache2/httpd.conf /private/etc/apache2/httpd.conf.orig
         $ sudo vi /private/etc/apache2/httpd.conf # uncomment the httpd-ssl.conf line
@@ -36,7 +27,7 @@ A simple wrapper around OpenSSL for issuing SSL certs in a dev environment.
         -#Include /private/etc/apache2/extra/httpd-ssl.conf
         +Include /private/etc/apache2/extra/httpd-ssl.conf
         
-6. Install the server key and certificate in the standard location.
+5. Install the server key and certificate in the standard location.
 
         $ ls /private/etc/apache2/server.{crt,key} # if these files exist, move them to a backup
         $ sudo cp -n ~/.devca/star.example.com.crt /private/etc/apache2/server.crt
@@ -59,6 +50,30 @@ A simple wrapper around OpenSSL for issuing SSL certs in a dev environment.
         -127.0.0.1	localhost
         +127.0.0.1	localhost m.example.com www.example.com
         
-8. Profit. You can now open https://m.example.com/ or https://www.example.com/ in Chrome and it'll be served from your localhost apache with valid SSL certs.
+8. Install the CA cert in your browser. For Chrome and Safari, just open the cert, click Always Trust, and enter your password. You should then see the certificate marked trusted in your account. If you use Firefox, you'll have to install it in Firefox separately.
+
+        $ open ~/.devca/devca.txt
+        
+  ![Always Trust CA Cert Dialog Screenshot](/images/devca-install-ca-cert.png "Click Always Trust")
+  
+  ![Certificate Marked Trusted in Keychain Acceess Screenshot](/images/devca-install-ca-cert-success.png "This certificate is marked trusted for this account")
+  
+9. Profit. You can now open https://m.example.com/ or https://www.example.com/ in Chrome and it'll be served from your localhost apache with valid SSL certs.
 
   ![Success loading m.example.com in Chrome Screenshot](/images/devca-successfully-loaded-in-chrome.png "The identity of this website has been verified by Dev CA.")
+  
+#### Example: installing devca.crt in Firefox
+
+Note: this assumes you already followed the steps for 1 - 7 above.
+
+1. Open Firefox -> Preferences -> Advanced -> View Certificates -> Import, and select ~/.devca/devca.crt.
+
+  ![Importing CA cert into Firefox Screenshot](/images/devca-install-ca-cert-firefox1.png "Select ~/.devca/devca.crt")
+  
+2. Click the subsequent checkbox to trust the certificate for websites.
+
+  ![Clicking Trust this CA to identify websites.](/images/devca-trust-firefox.png "Check Trust this CA to identify websites")
+
+3. You can now open https://m.example.com/ or https://www.example.com/ in Firefox and it'll be served from your localhost apache with valid SSL Certs. You should not have received any browser warnings when visiting the site.
+
+  ![Success loading www.example.com in Firefox Screenshot](/images/devca-successfully-loaded-in-firefox.png "The connection to this website is secure.")
