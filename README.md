@@ -50,7 +50,7 @@ A simple wrapper around OpenSSL for issuing SSL certs in a dev environment.
         -127.0.0.1	localhost
         +127.0.0.1	localhost m.example.com www.example.com
         
-8. Install the CA cert in your browser. For Chrome and Safari, just open the cert, click Always Trust, and enter your password. You should then see the certificate marked trusted in your account. If you use Firefox, you'll have to install it in Firefox separately.
+8. Install the CA cert in your browser. For Chrome, Safari, and Opera, just open the cert, click Always Trust, and enter your password. You should then see the certificate marked trusted in your account. If you use Firefox, you'll have to install it in Firefox separately.
 
         $ open ~/.devca/devca.txt
         
