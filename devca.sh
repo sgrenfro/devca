@@ -12,6 +12,7 @@ usage()
 
 CAKEY=$CADIR/devca.key
 CACRT=$CADIR/devca.crt
+CAPFX=$CADIR/devca.pfx
 CASERIAL=$CADIR/serial.txt
 HOSTNAME_PART='[^*/,:[:space:]]+'
 HOSTNAME_REGEX="^(\*\.)?($HOSTNAME_PART\.)*$HOSTNAME_PART$"
@@ -29,6 +30,10 @@ then
   if [ $? -eq 0 -a ! -e "$CACRT" ];
   then
     openssl req -new -x509 -days 3650 -key $CAKEY -out $CACRT -batch -subj '/CN=Dev CA' > /dev/null 2>&1
+  fi
+  if [ $? -eq 0 -a ! -e "$CAPFX" ];
+  then
+    openssl pkcs12 -export -out $CAPFX -inkey $CAKEY -in $CACRT
   fi
   if [ $? -eq 0 ];
   then
